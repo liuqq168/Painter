@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/koo-example/koo-example",
     "pages/example/example"
   ],
   "window": {

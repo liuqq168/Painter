@@ -1,0 +1,6 @@
+/* pages/koo-example/koo-example.wxss */
+
+.container {
+  display: flex;
+  justify-content: center
+}
