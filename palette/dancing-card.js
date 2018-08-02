@@ -4,20 +4,68 @@ export default class SunningJuly {
       width: '700rpx',
       height: '1400rpx',
       background: '#eee',
-      views: [],
+      views: [{
+        type: 'qrcode',
+        content: 'https://github.com/Kujiale-Mobile/Painter',
+        css: {
+          top: '40rpx',
+          left: '180rpx',
+          color: 'red',
+          borderWidth: '10rpx',
+          borderColor: 'blue',
+          width: '120rpx',
+          height: '120rpx',
+        },
+        methods: {
+          tap() {
+            console.log('qrcode');
+          },
+        },
+      },
+      {
+        type: 'rect',
+        css: {
+          top: '40rpx',
+          right: '40rpx',
+          color: 'green',
+          borderRadius: '20rpx',
+          borderWidth: '10rpx',
+          width: '120rpx',
+          height: '120rpx',
+        },
+        methods: {
+          tap() {
+            console.log('rect');
+          },
+        },
+      },
+      {
+        type: 'text',
+        text: 'borderWidth',
+        css: {
+          top: '40rpx',
+          right: '200rpx',
+          color: 'green',
+          borderWidth: '2rpx',
+        },
+        methods: {
+          tap() {
+            console.log('text');
+          },
+        },
+      },
+      ],
       methods: {
         tap: this._tap,
-        longpress: this._longpress,
-        touchstart: this._touchstart,
-        touchmove: this._touchmove,
-        touchend: this._touchend,
+        longpress() {
+          console.log('long press');
+        },
       },
     };
   }
 
-  _tap(e) {
-    console.log('tapped at: ');
-    console.log(e);
+  _tap() {
+    console.log('background');
   }
 
   _longpress() {}
