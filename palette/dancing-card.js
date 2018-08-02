@@ -37,6 +37,9 @@ export default class SunningJuly {
           tap() {
             console.log('rect');
           },
+          longpress() {
+            console.log('rect longpress');
+          },
         },
       },
       {
@@ -55,12 +58,12 @@ export default class SunningJuly {
         },
       },
       ],
-      methods: {
-        tap: this._tap,
-        longpress() {
-          console.log('long press');
-        },
-      },
+      // methods: {
+      //   tap: this._tap,
+      //   longpress() {
+      //     console.log('long press');
+      //   },
+      // },
     };
   }
 
