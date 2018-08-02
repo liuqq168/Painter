@@ -1,5 +1,4 @@
 <!--pages/koo-example/koo-example.wxml-->
 <view class="container">
-  <painter palette="{{template}}" bind:imgOK="onImgOK"/>
-
+  <painter palette="{{template}}" bind:imgOK="onImgOK" bind:onEventSend="onEventSend"/>
 </view>
