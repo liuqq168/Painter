@@ -22,7 +22,7 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    const template = new DCard().palette();
+    const template = new DCard(this).palette();
     this.setData({
       template: template,
     });
@@ -35,6 +35,10 @@ Page({
 
   onEventSend(e) {
     this.kooHandler.emitEvent(e);
+  },
+
+  pageMethod() {
+    console.log('page method');
   },
 
 });
