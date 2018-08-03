@@ -31,7 +31,7 @@ export default class SunningJuly {
         type: 'rect',
         css: {
           top: '40rpx',
-          right: '40rpx',
+          left: '180rpx',
           color: 'green',
           borderRadius: '20rpx',
           borderWidth: '10rpx',
@@ -42,20 +42,14 @@ export default class SunningJuly {
           tap() {
             console.log('rect');
           },
-          longpress() {
-            console.log('rect longpress');
-          },
-          touchend() {
-            console.log('rect touch end');
-          },
         },
       },
       {
         type: 'text',
         text: 'borderWidth',
         css: {
-          top: '340rpx',
-          right: '200rpx',
+          top: '40rpx',
+          left: '180rpx',
           color: 'green',
           borderWidth: '2rpx',
           fontSize: '40rpx',
@@ -70,9 +64,6 @@ export default class SunningJuly {
       methods: {
         tap(e) {
           console.log('background tap');
-        },
-        touchmove(e) {
-          console.log(e);
         },
       },
     };
