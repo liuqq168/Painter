@@ -1,5 +1,10 @@
 export default class SunningJuly {
+  context = {}
+  constructor(context) {
+    this.context = context;
+  }
   palette() {
+    const that = this.context;
     return {
       width: '700rpx',
       height: '1400rpx',
@@ -36,6 +41,7 @@ export default class SunningJuly {
         methods: {
           tap() {
             console.log('rect');
+            console.log(that);
           },
           longpress() {
             console.log('rect longpress');
@@ -74,7 +80,7 @@ export default class SunningJuly {
   }
 
   _tap() {
-    console.log('background');
+    console.log(this);
   }
 
   _longpress() {}
