@@ -41,7 +41,6 @@ export default class SunningJuly {
         methods: {
           tap() {
             console.log('rect');
-            console.log(that);
           },
           longpress() {
             console.log('rect longpress');
@@ -55,10 +54,11 @@ export default class SunningJuly {
         type: 'text',
         text: 'borderWidth',
         css: {
-          top: '40rpx',
+          top: '340rpx',
           right: '200rpx',
           color: 'green',
           borderWidth: '2rpx',
+          fontSize: '40rpx',
         },
         methods: {
           tap() {
@@ -68,26 +68,13 @@ export default class SunningJuly {
       },
       ],
       methods: {
-        tap: this._tap,
-        longpress() {
-          console.log('long press');
+        tap(e) {
+          console.log('background tap');
         },
-        touchend() {
-          console.log('touch end');
+        touchmove(e) {
+          console.log(e);
         },
       },
     };
   }
-
-  _tap() {
-    console.log(this);
-  }
-
-  _longpress() {}
-
-  _touchstart() {}
-
-  _touchmove() {}
-
-  _touchend() {}
 }
