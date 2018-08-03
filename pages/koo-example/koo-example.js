@@ -34,6 +34,7 @@ Page({
   },
 
   onEventSend(e) {
+    // true表示渗透，默认冒泡
     this.kooHandler.emitEvent(e);
   },
 
