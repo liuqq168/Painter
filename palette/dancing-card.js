@@ -46,13 +46,54 @@ export default class SunningJuly {
       },
       {
         type: 'text',
-        text: 'borderWidth',
+        text: 'borderWidthsdjfkdgjlsdhfdskljdshgdsjalfdjhgdklshgksahf',
         css: {
-          top: '40rpx',
-          left: '180rpx',
+          top: '340rpx',
+          left: '300rpx',
           color: 'green',
           borderWidth: '2rpx',
           fontSize: '40rpx',
+          width: '200rpx',
+          maxLines: 3,
+          align: 'left',
+        },
+        methods: {
+          tap() {
+            console.log('text');
+          },
+        },
+      },
+      {
+        type: 'text',
+        text: 'borderWidthsdjfkdgjlsdhfdskljdshgdsjalfdjhgdklshgksahf',
+        css: {
+          top: '540rpx',
+          left: '300rpx',
+          color: 'green',
+          borderWidth: '2rpx',
+          fontSize: '40rpx',
+          width: '200rpx',
+          maxLines: 3,
+          align: 'center',
+        },
+        methods: {
+          tap() {
+            console.log('text');
+          },
+        },
+      },
+      {
+        type: 'text',
+        text: 'borderWidthsdjfkdgjlsdhfdskljdshgdsjalfdjhgdklshgksahf',
+        css: {
+          top: '740rpx',
+          left: '300rpx',
+          color: 'green',
+          borderWidth: '2rpx',
+          fontSize: '40rpx',
+          width: '200rpx',
+          maxLines: 3,
+          align: 'right',
         },
         methods: {
           tap() {
@@ -62,9 +103,9 @@ export default class SunningJuly {
       },
       ],
       methods: {
-        tap(e) {
-          console.log('background tap');
-        },
+        // tap(e) {
+        //   console.log('background tap');
+        // },
       },
     };
   }
