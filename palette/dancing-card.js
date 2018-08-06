@@ -20,6 +20,7 @@ export default class SunningJuly {
           borderColor: 'blue',
           width: '120rpx',
           height: '120rpx',
+          align: 'center',
         },
         methods: {
           tap() {
