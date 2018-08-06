@@ -111,3 +111,6 @@ export default class SunningJuly {
     };
   }
 }
+
+module.exports = SunningJuly;
+
