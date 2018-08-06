@@ -15,7 +15,7 @@ Page({
   onReady: function () {
     // const template = new DCard().palette();
     const template = {
-      name: 'SunningJuly',
+      path: '/palette/dancing-card.js',
     };
     this.setData({
       template: template,
