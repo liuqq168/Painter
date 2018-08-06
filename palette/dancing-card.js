@@ -96,16 +96,21 @@ export default class SunningJuly {
           align: 'right',
         },
         methods: {
-          tap() {
+          longpress() {
             console.log('text');
           },
         },
       },
       ],
       methods: {
-        // tap(e) {
-        //   console.log('background tap');
-        // },
+        longpress(e) {
+          wx.showToast({
+            title: 'background',
+          });
+        },
+        tap() {
+          console.log('backgroud');
+        },
       },
     };
   }
