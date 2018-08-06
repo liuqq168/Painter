@@ -16,6 +16,7 @@ Page({
     // const template = new DCard().palette();
     const template = {
       path: '/palette/dancing-card.js',
+      data: {},
     };
     this.setData({
       template: template,

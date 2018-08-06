@@ -1,10 +1,9 @@
 export default class SunningJuly {
   context = {}
-  constructor(context) {
-    this.context = context;
+  constructor(data) {
+    this.data = data;
   }
   palette() {
-    const that = this.context;
     return {
       width: '700rpx',
       height: '1400rpx',
