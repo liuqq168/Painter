@@ -7,6 +7,7 @@ Page({
    */
   data: {
     template: {},
+    img: '',
   },
 
   /**
@@ -24,7 +25,10 @@ Page({
   },
 
   onImgOK(e) {
-    console.log(e);
+    console.log(e.detail.path);
+    this.setData({
+      img: e.detail.path,
+    });
   },
 
   pageMethod() {

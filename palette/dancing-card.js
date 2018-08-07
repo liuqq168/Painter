@@ -6,7 +6,7 @@ export default class SunningJuly {
   palette() {
     return {
       width: '700rpx',
-      height: '1400rpx',
+      height: '1000rpx',
       background: '#eee',
       views: [{
         type: 'qrcode',
@@ -100,6 +100,9 @@ export default class SunningJuly {
             console.log('text');
           },
         },
+        animation: {
+          drag: true,
+        },
       },
       ],
       methods: {
@@ -107,9 +110,6 @@ export default class SunningJuly {
           wx.showToast({
             title: 'background',
           });
-        },
-        tap() {
-          console.log('backgroud');
         },
       },
     };
