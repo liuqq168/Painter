@@ -8,6 +8,11 @@ export default class SunningJuly {
       width: '700rpx',
       height: '1000rpx',
       background: '#eee',
+      methods: {
+        tap(e) {
+          console.log(e);
+        },
+      },
       views: [{
         type: 'qrcode',
         content: 'https://github.com/Kujiale-Mobile/Painter',
@@ -21,11 +26,6 @@ export default class SunningJuly {
           height: '120rpx',
           align: 'center',
         },
-        methods: {
-          tap() {
-            console.log('qrcode');
-          },
-        },
       },
       {
         type: 'rect',
@@ -37,11 +37,6 @@ export default class SunningJuly {
           borderWidth: '10rpx',
           width: '120rpx',
           height: '120rpx',
-        },
-        methods: {
-          tap() {
-            console.log('rect');
-          },
         },
       },
       {
@@ -57,11 +52,6 @@ export default class SunningJuly {
           maxLines: 3,
           align: 'left',
         },
-        methods: {
-          tap() {
-            console.log('text');
-          },
-        },
       },
       {
         type: 'text',
@@ -75,11 +65,6 @@ export default class SunningJuly {
           width: '200rpx',
           maxLines: 3,
           align: 'center',
-        },
-        methods: {
-          tap() {
-            console.log('text');
-          },
         },
       },
       {
@@ -95,23 +80,16 @@ export default class SunningJuly {
           maxLines: 3,
           align: 'right',
         },
-        methods: {
-          longpress() {
-            console.log('text');
-          },
-        },
         animation: {
           drag: true,
         },
-      },
-      ],
-      methods: {
-        longpress(e) {
-          wx.showToast({
-            title: 'background',
-          });
+        methods: {
+          tap() {
+            console.log('click');
+          },
         },
       },
+      ],
     };
   }
 }
