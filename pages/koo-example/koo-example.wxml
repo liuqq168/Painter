@@ -2,5 +2,5 @@
 <view class="container">
   <painter palette="{{template}}" bind:imgOK="onImgOK"/>
 
-  <image src="{{img}}" style="width:700rpx;height:1000rpx;margin-top:20rpx"/>
+  <!-- <image src="{{img}}" style="width:700rpx;height:1000rpx;margin-top:20rpx"/> -->
 </view>
