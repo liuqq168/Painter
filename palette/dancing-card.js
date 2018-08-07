@@ -66,6 +66,14 @@ export default class SunningJuly {
           maxLines: 3,
           align: 'center',
         },
+        methods: {
+          tap() {
+            console.log('click');
+          },
+        },
+        animation: {
+          drag: true,
+        },
       },
       {
         type: 'text',
