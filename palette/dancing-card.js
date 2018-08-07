@@ -43,7 +43,7 @@ export default class SunningJuly {
         type: 'text',
         text: 'borderWidthsdjfkdgjlsdhfdskljdshgdsjalfdjhgdklshgksahf',
         css: {
-          top: '340rpx',
+          top: '240rpx',
           left: '300rpx',
           color: 'green',
           borderWidth: '2rpx',
@@ -57,7 +57,7 @@ export default class SunningJuly {
         type: 'text',
         text: 'borderWidthsdjfkdgjlsdhfdskljdshgdsjalfdjhgdklshgksahf',
         css: {
-          top: '540rpx',
+          top: '440rpx',
           left: '300rpx',
           color: 'green',
           borderWidth: '2rpx',
@@ -79,7 +79,7 @@ export default class SunningJuly {
         type: 'text',
         text: 'borderWidthsdjfkdgjlsdhfdskljdshgdsjalfdjhgdklshgksahf',
         css: {
-          top: '740rpx',
+          top: '640rpx',
           left: '300rpx',
           color: 'green',
           borderWidth: '2rpx',
