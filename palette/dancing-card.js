@@ -26,6 +26,9 @@ export default class SunningJuly {
           height: '120rpx',
           align: 'center',
         },
+        animation: {
+          drag: true
+        }
       },
       {
         type: 'rect',
@@ -38,6 +41,9 @@ export default class SunningJuly {
           width: '120rpx',
           height: '120rpx',
         },
+        animation: {
+          drag: true
+        }
       },
       {
         type: 'text',
@@ -52,6 +58,9 @@ export default class SunningJuly {
           maxLines: 3,
           align: 'left',
         },
+        animation: {
+          drag: true
+        }
       },
       {
         type: 'text',
