@@ -27,8 +27,8 @@ export default class SunningJuly {
           align: 'center',
         },
         animation: {
-          drag: true
-        }
+          drag: true,
+        },
       },
       {
         type: 'rect',
@@ -42,8 +42,8 @@ export default class SunningJuly {
           height: '120rpx',
         },
         animation: {
-          drag: true
-        }
+          drag: true,
+        },
       },
       {
         type: 'text',
@@ -59,8 +59,8 @@ export default class SunningJuly {
           align: 'left',
         },
         animation: {
-          drag: true
-        }
+          drag: true,
+        },
       },
       {
         type: 'text',
@@ -96,9 +96,6 @@ export default class SunningJuly {
           width: '200rpx',
           maxLines: 3,
           align: 'right',
-        },
-        animation: {
-          drag: true,
         },
         methods: {
           tap() {
