@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/index/index",
     "pages/koo-example/koo-example",
     "pages/example/example"
   ],
