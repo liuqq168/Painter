@@ -1,1 +1,4 @@
-<canvas canvas-id="k-canvas" style="{{painterStyle}}{{customStyle}}" />
+<view style="position:relative">
+  <canvas canvas-id="k-canvas" style="{{painterStyle}}{{customStyle}}" bindtap="onBind" bindlongpress="onBind" bindtouchstart="onBind"
+    bindtouchmove="onBind" bindtouchend="onBind" />
+</view>

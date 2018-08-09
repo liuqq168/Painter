@@ -1,5 +1,6 @@
 import Pen from './lib/pen';
 import Downloader from './lib/downloader';
+import KooHandler from './lib/koo-handler';
 
 const util = require('./lib/util');
 
@@ -11,6 +12,7 @@ Component({
   canvasWidthInPx: 0,
   canvasHeightInPx: 0,
   paintCount: 0,
+  kooHandler: {},
   /**
    * 组件的属性列表
    */
@@ -63,6 +65,11 @@ Component({
         return;
       }
 
+      if (this.properties.palette.path) {
+        const Card = require(`../..${this.properties.palette.path}`);
+        this.properties.palette = new Card().palette(this.properties.palette.data);
+      }
+
       if (!(getApp().systemInfo && getApp().systemInfo.screenWidth)) {
         try {
           getApp().systemInfo = wx.getSystemInfoSync();
@@ -88,6 +95,8 @@ Component({
         });
         const ctx = wx.createCanvasContext('k-canvas', this);
         const pen = new Pen(ctx, palette);
+        this.kooHandler = new KooHandler();
+        this.kooHandler.init(pen);
         pen.paint(() => {
           this.saveImgToLocal();
         });
@@ -98,7 +107,8 @@ Component({
       return new Promise((resolve, reject) => {
         let preCount = 0;
         let completeCount = 0;
-        const paletteCopy = JSON.parse(JSON.stringify(this.properties.palette));
+        // const paletteCopy = JSON.parse(JSON.stringify(this.properties.palette));
+        const paletteCopy = this.deepClone(this.properties.palette);
         if (paletteCopy.background) {
           preCount++;
           downloader.download(paletteCopy.background).then((path) => {
@@ -153,6 +163,25 @@ Component({
       });
     },
 
+    // 递归实现一个深拷贝，保留对象中的方法
+    deepClone(source) {
+      if (!source || typeof source !== 'object') {
+        throw new Error('error arguments', 'shallowClone');
+      }
+      const targetObj = source.constructor === Array ? [] : {};
+      for (const keys in source) {
+        if (source.hasOwnProperty(keys)) {
+          if (source[keys] && typeof source[keys] === 'object') {
+            targetObj[keys] = source[keys].constructor === Array ? [] : {};
+            targetObj[keys] = this.deepClone(source[keys]);
+          } else {
+            targetObj[keys] = source[keys];
+          }
+        }
+      }
+      return targetObj;
+    },
+
     saveImgToLocal() {
       const that = this;
       setTimeout(() => {
@@ -193,6 +222,28 @@ Component({
           that.triggerEvent('imgErr', { error: error });
         },
       });
+    },
+
+    // interaction
+    onBind(e) {
+      this.kooHandler.emit(this._packEvent(e, 'bind'));
+    },
+
+    _packEvent(e, mode) {
+      if (e.type === 'touchstart') {
+        this.touchstart = {
+          x: e.touches[0].x,
+          y: e.touches[0].y,
+        };
+      }
+      const swt = e.type === 'touchmove';
+      const res = {
+        x: swt ? e.touches[0].x : this.touchstart.x,
+        y: swt ? e.touches[0].y : this.touchstart.y,
+        type: e.type,
+        mode: mode,
+      };
+      return res;
     },
   },
 });

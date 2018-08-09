@@ -4,20 +4,54 @@ export default class Painter {
   constructor(ctx, data) {
     this.ctx = ctx;
     this.data = data;
+    this.viewsPool = [];
+    this.callback = {};
   }
 
   paint(callback) {
+    this.callback = callback;
     this.style = {
       width: this.data.width.toPx(),
       height: this.data.height.toPx(),
     };
     this._background();
+
+    // 将静态元素绘制在static-canvas，将动态元素绘制在dynamic-canvas并入动态池
+    const dynamicPool = [];
+    const staticPool = [];
     for (const view of this.data.views) {
+      if (view.animation) {
+        dynamicPool.push(view);
+      } else {
+        staticPool.push(view);
+      }
       this._drawAbsolute(view);
     }
+    // 整理元素池
+    this.viewsPool = staticPool.concat(dynamicPool);
     this.ctx.draw(false, () => {
       callback();
     });
+  }
+
+  // 提供给kooHandler使用，接收动态元素的位置信息
+  moveView(view) {
+    // 先绘制背景
+    this._background();
+    // 绘制所有元素
+    let index;
+    this.viewsPool.forEach((v, i) => {
+      if (view !== v) {
+        this._drawAbsolute(v);
+      } else {
+        index = i;
+      }
+    });
+    this._drawAbsolute(view);
+    // 对元素进行重新排序
+    this.viewsPool.splice(index, 1);
+    this.viewsPool.push(view);
+    this.ctx.draw(false);
   }
 
   _background() {
@@ -148,7 +182,13 @@ export default class Painter {
         view.css.fontSize = view.css.fontSize ? view.css.fontSize : '20rpx';
         this.ctx.font = `normal ${fontWeight} ${view.css.fontSize.toPx()}px sans-serif`;
         // this.ctx.setFontSize(view.css.fontSize.toPx());
-        const textLength = this.ctx.measureText(view.text).width;
+        let textLength = 0;
+        if (view.css.textLength) {
+          textLength = view.css.textLength;
+        } else {
+          textLength = this.ctx.measureText(view.text).width;
+          view.css.textLength = textLength;
+        }
         width = view.css.width ? view.css.width.toPx() : textLength;
         // 计算行数
         const calLines = Math.ceil(textLength / width);
@@ -180,21 +220,39 @@ export default class Painter {
     const angle = view.css && view.css.rotate ? this._getAngle(view.css.rotate) : 0;
     // 当设置了 right 时，默认 align 用 right，反之用 left
     const align = view.css && view.css.align ? view.css.align : (view.css && view.css.right ? 'right' : 'left');
+
+    let xa = 0;
+    const ya = y + height / 2;
     switch (align) {
       case 'center':
-        this.ctx.translate(x, y + height / 2);
+        xa = x;
         break;
       case 'right':
-        this.ctx.translate(x - width / 2, y + height / 2);
+        xa = x - width / 2;
         break;
       default:
-        this.ctx.translate(x + width / 2, y + height / 2);
+        xa = x + width / 2;
         break;
     }
+    this.ctx.translate(xa, ya);
+
     this.ctx.rotate(angle);
     if (!notClip && view.css && view.css.borderRadius) {
       this._doClip(view.css.borderRadius, width, height);
     }
+
+    view.position = {
+      origin: {
+        x: x,
+        y: y,
+      },
+      actual: {
+        x: xa - width / 2,
+        y: y,
+      },
+      width: width,
+      height: height,
+    };
 
     return {
       width: width,
@@ -267,10 +325,24 @@ export default class Painter {
     const preLineLength = Math.round(view.text.length / lines);
     let start = 0;
     let alreadyCount = 0;
+    if (!view.textBuf) {
+      view.textBuf = [];
+    }
+    let bufIndex = 0;
     for (let i = 0; i < lines; ++i) {
       alreadyCount = preLineLength;
       let text = view.text.substr(start, alreadyCount);
-      let measuredWith = this.ctx.measureText(text).width;
+
+      let measuredWith = 0;
+      // measuredWith = this.ctx.measureText(text).width;
+      if (view.textBuf[bufIndex]) {
+        measuredWith = view.textBuf[bufIndex];
+      } else {
+        measuredWith = this.ctx.measureText(text).width;
+        view.textBuf[bufIndex] = measuredWith;
+      }
+      bufIndex++;
+
       // 如果测量大小小于width一个字符的大小，则进行补齐，如果测量大小超出 width，则进行减除
       // 如果已经到文本末尾，也不要进行该循环
       while ((start + alreadyCount <= view.text.length) && (width - measuredWith > view.css.fontSize.toPx() || measuredWith > width)) {
@@ -283,20 +355,52 @@ export default class Painter {
           }
           text = view.text.substr(start, --alreadyCount);
         }
-        measuredWith = this.ctx.measureText(text).width;
+
+        // measuredWith = this.ctx.measureText(text).width;
+        if (view.textBuf[bufIndex]) {
+          measuredWith = view.textBuf[bufIndex];
+        } else {
+          measuredWith = this.ctx.measureText(text).width;
+          view.textBuf[bufIndex] = measuredWith;
+        }
+        bufIndex++;
       }
       start += text.length;
       // 如果是最后一行了，发现还有未绘制完的内容，则加...
       if (i === lines - 1 && start < view.text.length) {
-        while (this.ctx.measureText(`${text}...`).width > width) {
+        let lastLength = 0;
+        if (view.textBuf[bufIndex]) {
+          lastLength = view.textBuf[bufIndex];
+        } else {
+          lastLength = this.ctx.measureText(`${text}...`).width;
+          view.textBuf[bufIndex] = lastLength;
+        }
+        bufIndex++;
+
+        while (lastLength > width) {
           if (text.length <= 1) {
             // 如果只有一个字符时，直接跳出循环
             break;
           }
           text = text.substring(0, text.length - 1);
+          if (view.textBuf[bufIndex]) {
+            lastLength = view.textBuf[bufIndex];
+          } else {
+            lastLength = this.ctx.measureText(`${text}...`).width;
+            view.textBuf[bufIndex] = lastLength;
+          }
+          bufIndex++;
         }
         text += '...';
-        measuredWith = this.ctx.measureText(text).width;
+
+        // measuredWith = this.ctx.measureText(text).width;
+        if (view.textBuf[bufIndex]) {
+          measuredWith = view.textBuf[bufIndex];
+        } else {
+          measuredWith = this.ctx.measureText(text).width;
+          view.textBuf[bufIndex] = measuredWith;
+        }
+        bufIndex++;
       }
       this.ctx.setTextAlign(view.css.align ? view.css.align : 'left');
       let x;
