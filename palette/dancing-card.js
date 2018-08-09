@@ -106,6 +106,7 @@ export default class SunningJuly {
           width: '200rpx',
           maxLines: 3,
           align: 'right',
+          rotate: '10',
         },
         methods: {
           tap() {
