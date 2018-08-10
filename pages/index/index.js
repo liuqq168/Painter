@@ -6,6 +6,8 @@ Page({
    */
   data: {
     template: {},
+    reports: [],
+    showReports: false,
   },
 
   /**

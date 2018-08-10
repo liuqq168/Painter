@@ -1,4 +1,7 @@
-<!--pages/index/index.wxml-->
+<!-- pages/index/index.wxml -->
 <view class="container">
-  <painter palette="{{template}}"/>
+  <painter palette="{{template}}" />
+  <view wx:for="{{reports}}" wx:if="{{showReports}}">
+    <view>{{item}}</view>
+  </view>
 </view>

@@ -1,5 +1,7 @@
 const QR = require('./qrcode.js');
 
+const app = getApp();
+
 export default class Painter {
   constructor(ctx, data) {
     this.ctx = ctx;
@@ -36,6 +38,7 @@ export default class Painter {
 
   // 提供给kooHandler使用，接收动态元素的位置信息
   moveView(view) {
+    const st = new Date().getTime();
     // 先绘制背景
     this._background();
     // 绘制所有元素
@@ -51,7 +54,10 @@ export default class Painter {
     // 对元素进行重新排序
     this.viewsPool.splice(index, 1);
     this.viewsPool.push(view);
-    this.ctx.draw(false);
+    this.ctx.draw(false, () => {
+      const ed = new Date().getTime();
+      app.reports.push(ed - st);
+    });
   }
 
   _background() {

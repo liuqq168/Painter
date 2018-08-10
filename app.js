@@ -1,5 +1,8 @@
 
 App({
+
+  reports: [],
+
   onLaunch: function () {
   },
 

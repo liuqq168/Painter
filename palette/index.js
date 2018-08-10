@@ -1,6 +1,9 @@
 export default class Index {
   palette() {
     const res = wx.getSystemInfoSync();
+    const pages = getCurrentPages();
+    const page = pages[pages.length - 1];
+    const app = getApp();
     return {
       background: '/palette/background.jpeg',
       width: '750rpx',
@@ -65,6 +68,75 @@ export default class Index {
             bottom: '140rpx',
             width: '350rpx',
             color: '#aa0',
+          },
+        },
+
+        {
+          type: 'rect',
+          css: {
+            right: '200rpx',
+            top: '595rpx',
+            width: '350rpx',
+            height: '60rpx',
+            color: '#333',
+            align: 'center',
+            borderRadius: '4rpx',
+          },
+          methods: {
+            tap() {
+              page.setData({
+                reports: app.reports,
+                showReports: !page.data.showReports,
+              });
+            },
+          },
+        },
+
+        {
+          type: 'text',
+          text: '显示debug报告',
+          css: {
+            fontSize: '40rpx',
+            lineHeight: '50rpx',
+            right: '200rpx',
+            top: '600rpx',
+            width: '350rpx',
+            color: '#fff',
+            align: 'center',
+          },
+        },
+        {
+          type: 'rect',
+          css: {
+            right: '200rpx',
+            top: '685rpx',
+            width: '350rpx',
+            height: '60rpx',
+            color: '#333',
+            align: 'center',
+            borderRadius: '4rpx',
+          },
+          methods: {
+            tap() {
+              app.reports = [];
+              page.setData({
+                reports: [],
+                showReports: false,
+              });
+            },
+          },
+        },
+        {
+          type: 'text',
+          text: '重置debug报告',
+          css: {
+            fontSize: '40rpx',
+            lineHeight: '50rpx',
+            right: '200rpx',
+            top: '690rpx',
+            width: '350rpx',
+            color: '#fff',
+            align: 'center',
           },
         },
       ],
