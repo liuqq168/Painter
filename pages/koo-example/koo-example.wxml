@@ -1,5 +1,5 @@
 <!--pages/koo-example/koo-example.wxml-->
-<view class="container">
+<view class="cg">
   <painter palette="{{template}}" bind:imgOK="onImgOK"/>
 
   <!-- <image src="{{img}}" style="width:700rpx;height:1000rpx;margin-top:20rpx"/> -->

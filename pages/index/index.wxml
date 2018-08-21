@@ -1,4 +1,4 @@
 <!--pages/index/index.wxml-->
-<view class="container">
+<view class="cg">
   <painter palette="{{template}}"/>
 </view>

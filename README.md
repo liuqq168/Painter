@@ -3,10 +3,18 @@
 **Painter 的优势**
 
 - 功能全，支持文本、图片、矩形、qrcode 类型的 view 绘制
+
 - 布局全，支持多种布局方式，如 align（对齐方式）、rotate（旋转）
+
 - 支持圆角，其中图片，矩形，和整个画布支持 borderRadius 来设置圆角
+
 - 杠杠的性能优化，我们对网络素材图片加载实现了一套 LRU 存储机制，不用重复下载素材图片。
+
 - 杠杠的容错，因为某些特殊情况会导致 Canvas 绘图不完整。我们对此加入了对结果图片进行检测机制，如果绘图出错会进行重绘。
+
+- ##### 支持对view设置点击事件，包括tap, longpress, touchstart, touchmove, touchend。
+
+- ##### 支持图片上的元素拖动
 
 **TODO**
 
@@ -14,6 +22,8 @@
 - [x] image 加入 mode 属性
 - [ ] 可通过文本中的换行符进行主动换行
 - [ ] fontFamily 属性支持
+- [ ] 点击区域精确定位（目前对元素的定位基于元素所占据的矩形区域，因此若设置圆角，在举行被裁减处也会触发事件）/
+- [ ] 添加动画能力（遥遥无期。。。）
 
 ## 画家计划
 
@@ -30,7 +40,7 @@
 ### 运行例子
 
 ```
-git clone https://github.com/Kujiale-Mobile/Painter.git
+git clone https://github.com/shesw/Painter.git
 ```
 
 代码下载后，用小程序 IDE 打开后即可使用。
@@ -45,10 +55,10 @@ mpvue 的使用方法请移步 [mpvue接入方案](https://github.com/Kujiale-Mo
 
 1. 引入代码
 
-   Painter 的核心代码在另一个 repo 中，https://github.com/Kujiale-Mobile/PainterCore.git 。你可以通过submodule 的方式进行库的引入。有关 submodule 的用法可自行 Google。
+   Painter 的核心代码在另一个 repo 中，https://github.com/shesw/PainterCore.git 。你可以通过submodule 的方式进行库的引入。有关 submodule 的用法可自行 Google。
 
    ```
-   git submodule add https://github.com/Kujiale-Mobile/PainterCore.git components/painter
+   git submodule add https://github.com/shesw/PainterCore.git components/painter
    ```
 
 2. 作为自定义组件引入，注意目录为第一步引入的代码所在目录
@@ -64,7 +74,10 @@ mpvue 的使用方法请移步 [mpvue接入方案](https://github.com/Kujiale-Mo
    ```
    <painter palette="{{data}}" bind:imgOK="onImgOK" />
    ```
+   将data传给palette，支持两种方式：
 
+   * 生成json文件，作为data传入palette。（demo中的精简版）
+   * 将json文件所在的路径（必须为绝对路径）作为data，传入palette。__若要使用点击功能和拖拽功能，则必须使用这种方法__。（demo中的动态版）
 
 4. 数据传入后，则会自动进行绘图。绘图完成后，你可以通过绑定 imgOK 或 imgErr 事件来获得成功后的图片 或失败的原因。
 
@@ -93,6 +106,8 @@ width: 宽度
 height: 高度
 borderRadius: 边框的圆角（该属性也同样适用于子 view）
 views: 里面承载子 view
+methods: 点击事件触发的方法
+animation: 目前只支持一个功能，即元素的拖拽。
 ```
 
 ### View 属性
@@ -436,6 +451,85 @@ Painter 的 align 类型与 css 中的 align 有些许不同。在 Painter 中 a
 绘制效果如下
 
 ![](http://7xq276.com2.z0.glb.qiniucdn.com/2.png)
+
+
+
+## 添加交互事件-methods和animation属性
+
+##### 演示：
+
+![](http://sinacloud.net/music-store/markdownPic/ts1534863510311dpainter.gif?KID=sina%2C2o3w9tlWumQRMwg2TQqi&ssig=7rs6kwJQZC&Expires=1535727533 )
+
+__首先，要使用Painter的交互功能，则必须使用绝对路径方式来导入template。且paniter本身的路径应为：/components/painter/。__
+
+__palette文件中将json文件export出来：__
+
+```js
+module.exports = SunningJuly;
+```
+
+原因：小程序页面向组件传递对象时，对象中的方法不会被传递（类似于JSON.parse(JSON.stringfy())的拷贝方式）。因此需要在组件内去require这个json对象，并生成所需的json对象。
+
+#### 代码
+
+可以给整个画布以及各个view添加methods属性:
+
+```js
+{
+      width: '700rpx',
+      height: '500rpx',
+      background: '#eee',
+      methods:{
+          tap(){
+              console.log('tap background')
+          }
+      },
+      views: [{
+        type: 'qrcode',
+        content: 'https://github.com/Kujiale-Mobile/Painter',
+        css: {
+          top: '40rpx',
+          left: '180rpx',
+          color: 'red',
+          borderWidth: '10rpx',
+          borderColor: 'blue',
+          width: '120rpx',
+          height: '120rpx',
+          align: 'center',
+        },
+        methods: {
+          tap() {
+            console.log('qrcode');
+          },
+        },
+        animation: {
+          drag: true,
+        },
+      }],
+    }
+```
+
+#### 解释
+
+##### methods中支持五种方法：
+
+| 事件       | 备注 |
+| ---------- | ---- |
+| tap        | 点击 |
+| longpress  | 长按 |
+| touchstart | 触屏 |
+| touchmove  | 移动 |
+| touchend   | 离屏 |
+
+###### 小技巧：
+
+可以向palette中传入方法所需的上下文对象，也可以通过this.getCurrentPages()来获取当前页面的上下文对象
+
+##### animaton
+
+目前只支持拖拽行为，在animation里设置drag: true就可以。
+
+
 
 ## 使用 Painter 的项目
 
